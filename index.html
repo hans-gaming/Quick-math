@@ -1,10 +1,9 @@
-<!-- force redeploy -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Math Game</title>
+  <title>Quick Math Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -184,10 +183,31 @@
       }, 1000);
 
       const max = level * 10;
-      const a = Math.floor(Math.random() * max);
-      const b = Math.floor(Math.random() * max);
-      currentAnswer = a + b;
-      currentQuestion = `What is ${a} + ${b}?`;
+      let a = Math.floor(Math.random() * max);
+      let b = Math.floor(Math.random() * max);
+      let type = "+";
+
+      if (level >= 3 && level <= 4) {
+        type = "-";
+        if (b > a) [a, b] = [b, a];
+        currentAnswer = a - b;
+      } else if (level >= 5 && level <= 6) {
+        type = "×";
+        currentAnswer = a * b;
+      } else if (level >= 7) {
+        const types = ["+", "-", "×"];
+        type = types[Math.floor(Math.random() * types.length)];
+        if (type === "+") currentAnswer = a + b;
+        if (type === "-") {
+          if (b > a) [a, b] = [b, a];
+          currentAnswer = a - b;
+        }
+        if (type === "×") currentAnswer = a * b;
+      } else {
+        currentAnswer = a + b;
+      }
+
+      currentQuestion = `What is ${a} ${type} ${b}?`;
       questionEl.textContent = currentQuestion;
 
       const answers = [];
